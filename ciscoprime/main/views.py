@@ -136,7 +136,7 @@ class OverviewView(TemplateView):
         #controller summary
         context['ctrl'] = dict()
         context['ctrl']['response'] = api_request(
-            'https://140.221.242.4/webacs/api/v1/data/WlanControllers/2285283/.json')
+            'https://140.221.242.4/webacs/api/v1/data/WlanControllers/2274272/.json')
         if context['ctrl']['response'].get('json_response'):
             context['ctrl']['entity'] = context['ctrl']['response']['json_response']['queryResponse']['entity'][0]
 
