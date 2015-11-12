@@ -136,7 +136,7 @@ class OverviewView(TemplateView):
         
         #find controller
         response = api_request(
-            'https://'+settings.API_HOST+'/webacs/api/v1/data/WlanControllers/.json'))
+            'https://'+settings.API_HOST+'/webacs/api/v1/data/WlanControllers/.json')
         ctrl_id = response['json_response']['queryResponse']['entityId'][0]['$']
         context['ctrl_id'] = ctrl_id
         
