@@ -73,7 +73,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'America/Denver'
+TIME_ZONE = 'America/Austin'
 
 USE_I18N = True
 
