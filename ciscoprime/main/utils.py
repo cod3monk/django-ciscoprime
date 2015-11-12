@@ -50,7 +50,7 @@ def analyze_rogue_alert_msg(msg):
 
 def best_rssi_for_correlated(correlated):
     r = api_request(
-            'https://140.221.242.4/webacs/api/v1/data/Events.json?.full=true&correlated="%d"&severity=ne("CLEARED")' % correlated)
+            'https://'+settings.API_HOST+'/webacs/api/v1/data/Events.json?.full=true&correlated="%d"&severity=ne("CLEARED")' % correlated)
     ap = None
     if r.get('json_response'):
         for entity in r['json_response']['queryResponse']['entity']:

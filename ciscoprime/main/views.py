@@ -56,7 +56,7 @@ class RogueDetailView(TemplateView):
         context['rogues'] = list()
         context['events'] = list()
         r = api_request(
-            'https://140.221.242.4/webacs/api/v1/data/Events.json?.full=true&correlated="%d"&severity=ne("CLEARED")' % int(self.kwargs.get('correlated', 0)))
+            'https://'+settings.API_HOST+'/webacs/api/v1/data/Events.json?.full=true&correlated="%d"&severity=ne("CLEARED")' % int(self.kwargs.get('correlated', 0)))
         if r.get('json_response'):
             for entity in r['json_response']['queryResponse']['entity']:
                 try:
@@ -69,7 +69,7 @@ class RogueDetailView(TemplateView):
                     print 'Non decodable rogue message "%s".'
         #add alarm
         r = api_request(
-            'https://140.221.242.4/webacs/api/v1/data/Alarms/%d.json?category.value="Rogue AP"&condition.value="UNCLASSIFIED_ROGUE_AP_DETECTED"&severity=ne("CLEARED")&.full=true' % int(self.kwargs.get('correlated', 0)))
+            'https://'+settings.API_HOST+'/webacs/api/v1/data/Alarms/%d.json?category.value="Rogue AP"&condition.value="UNCLASSIFIED_ROGUE_AP_DETECTED"&severity=ne("CLEARED")&.full=true' % int(self.kwargs.get('correlated', 0)))
         if r.get('json_response'):
             entity = r['json_response']['queryResponse']['entity'][0]
             try:
@@ -96,7 +96,7 @@ class RoguesView(TemplateView):
         context['rogues'] = list()
         rogues = list()
         r = api_request(
-            'https://140.221.242.4/webacs/api/v1/data/Alarms.json?category.value="Rogue AP"&condition.value="UNCLASSIFIED_ROGUE_AP_DETECTED"&severity=ne("CLEARED")&.full=true&.maxResults=1000')
+            'https://'+settings.API_HOST+'/webacs/api/v1/data/Alarms.json?category.value="Rogue AP"&condition.value="UNCLASSIFIED_ROGUE_AP_DETECTED"&severity=ne("CLEARED")&.full=true&.maxResults=1000')
         if r.get('json_response'):
             context['rogues_count'] = r['json_response']['queryResponse']['@count']
             for entity in r['json_response']['queryResponse']['entity']:
@@ -136,14 +136,14 @@ class OverviewView(TemplateView):
         #controller summary
         context['ctrl'] = dict()
         context['ctrl']['response'] = api_request(
-            'https://140.221.242.4/webacs/api/v1/data/WlanControllers/2274272/.json')
+            'https://'+settings.API_HOST+'/webacs/api/v1/data/WlanControllers/2274272/.json')
         if context['ctrl']['response'].get('json_response'):
             context['ctrl']['entity'] = context['ctrl']['response']['json_response']['queryResponse']['entity'][0]
 
         #client count
         context['clients'] = dict()
         context['clients']['response'] = api_request(
-            'https://140.221.242.4/webacs/api/v1/data/Clients.json?status="ASSOCIATED"')
+            'https://'+settings.API_HOST+'/webacs/api/v1/data/Clients.json?status="ASSOCIATED"')
         if context['clients']['response'].get('json_response'):
             context['clients']['count'] = int(context['clients']['response']['json_response']['queryResponse']['@count'])
             
@@ -163,7 +163,7 @@ class OverviewView(TemplateView):
         context['ap'] = dict()
         context['ap']['highest_client_count_aps'] = list()
         r = api_request(
-            'https://140.221.242.4/webacs/api/v1/data/AccessPoints.json?.sort=-clientCount&.full=true')
+            'https://'+settings.API_HOST+'/webacs/api/v1/data/AccessPoints.json?.sort=-clientCount&.full=true')
         if r.get('json_response'):
             for i in range(5):
                 context['ap']['highest_client_count_aps'].append(r['json_response']['queryResponse']['entity'][i]['accessPointsDTO'])
@@ -171,7 +171,7 @@ class OverviewView(TemplateView):
         #rogue APs
         context['ap']['rogues'] = list()
         r = api_request(
-            'https://140.221.242.4/webacs/api/v1/data/Alarms.json?category.value="Rogue AP"&condition.value="UNCLASSIFIED_ROGUE_AP_DETECTED"&severity=ne("CLEARED")')
+            'https://'+settings.API_HOST+'/webacs/api/v1/data/Alarms.json?category.value="Rogue AP"&condition.value="UNCLASSIFIED_ROGUE_AP_DETECTED"&severity=ne("CLEARED")')
         if r.get('json_response'):
             context['ap']['rogues_count'] = r['json_response']['queryResponse']['@count']
         return context
@@ -185,7 +185,7 @@ class ApiCallView(LoginRequiredMixin, TemplateView):
         if self.request.GET.get('url'):
             context['request_url'] = self.request.GET.get('url')
         elif self.request.GET.get('query'):
-            context['request_url'] = 'https://140.221.242.4/webacs/api/v1/%s.json' % self.request.GET['query']
+            context['request_url'] = 'https://'+settings.API_HOST+'/webacs/api/v1/%s.json' % self.request.GET['query']
             if self.request.GET.get('params'):
                 context['request_url'] += self.request.GET.get('params')
         if context.get('request_url'):
