@@ -134,16 +134,10 @@ class OverviewView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(OverviewView, self).get_context_data(**kwargs)
         
-        #find controller
-        response = api_request(
-            'https://'+settings.API_HOST+'/webacs/api/v1/data/WlanControllers/.json')
-        ctrl_id = response['json_response']['queryResponse']['entityId'][0]['$']
-        context['ctrl_id'] = ctrl_id
-        
         #controller summary
         context['ctrl'] = dict()
         context['ctrl']['response'] = api_request(
-            'https://'+settings.API_HOST+'/webacs/api/v1/data/WlanControllers/'+ctrl_id+'/.json')
+            'https://'+settings.API_HOST+'/webacs/api/v1/data/WlanControllers/'+settings.CTRL_ID+'/.json')
         if context['ctrl']['response'].get('json_response'):
             context['ctrl']['entity'] = context['ctrl']['response']['json_response']['queryResponse']['entity'][0]
 
