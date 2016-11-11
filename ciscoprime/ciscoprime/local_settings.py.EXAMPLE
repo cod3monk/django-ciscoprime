@@ -1,0 +1,22 @@
+from .settings import DATABASES, BASE_DIR
+
+import os
+
+DEBUG = False
+ALLOWED_HOSTS = ['measurement.sc15.org', 'measurement-displays.sc15.org', 'localhost']
+
+SERVER_EMAIL = 'jh-sc14@u-sys.org'
+
+ADMINS = (('Julian Hammer', 'jh-sc14@u-sys.org'),)
+
+DATABASES['default']['NAME'] = '/srv/django-ciscoprime/django-ciscoprime/ciscoprime/db/db.sqlite3'
+
+API_HOST = '140.221.175.23'  # IP of prime server
+API_USER = 'api-user'        # User with NBI Read privileges
+API_PASSWORD = 'foobarbaz'   # Password
+
+# can be retrieved from https://cisco-prime.host/webacs/api/v1/data/WlanControllers/
+CTRL_ID = '522522'
+
+STATIC_ROOT = '/srv/django-ciscoprime/static/'
+STATIC_URL = '/main/static/'
